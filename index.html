@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>ABC Creator</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css"
+          integrity="sha256-p6xU9YulB7E2Ic62/PX+h59ayb3PBJ0WFTEQxq0EjHw=" crossorigin="anonymous"/>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $(function () {
+            $("#slider-range").slider({
+                range: true,
+                min: 0,
+                max: 10,
+                values: [0, 5],
+                slide: function (event, ui) {
+                    $("#slider-input").val(ui.values[0] + "% - " + ui.values[1] + "%");
+                }
+            });
+            $("#slider-input").val($("#slider-range").slider("values", 0) +
+                "% - " + $("#slider-range").slider("values", 1) + "%");
+        });
+    </script>
+    <script>
+        !function (f, b, e, v, n, t, s) {
+            if (f.fbq) return;
+            n = f.fbq = function () {
+                n.callMethod ?
+                    n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+            };
+            if (!f._fbq) f._fbq = n;
+            n.push = n;
+            n.loaded = !0;
+            n.version = '2.0';
+            n.queue = [];
+            t = b.createElement(e);
+            t.async = !0;
+            t.src = v;
+            s = b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t, s)
+        }(window, document, 'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '624875111674693');
+        fbq('track', 'PageView');
+    </script>
+</head>
+<body>
+<div class="container">
+    <h1 style="padding-top: 2rem; padding-bottom: 0.5rem;">ABC Lookalike Creator</h1>
+    <p style="padding-bottom: 2rem;">View your audiences in the <a
+            href="https://business.facebook.com/adsmanager/audiences"
+            target="_blank">Audiences Tool</a>.</p>
+    <form>
+        <div class="form-group">
+            <label for="ad-account-id-input">Ad Account ID</label>
+            <input type="number" class="form-control" id="ad-account-id-input" placeholder="">
+        </div>
+
+        <div class="form-group">
+            <label for="ad-set-id-input">Campaign/ Ad Set ID(s)</label>
+            <input type="text" class="form-control" id="ad-set-id-input" aria-describedby="ad-set-id-input-help"
+                   placeholder="">
+            <small id="ad-set-id-input-help" class="form-text text-muted">
+                People who convert on these ads are used to model a lookalike. One or more <strong>campaign IDs or ad
+                set IDs</strong>, or a mix of them, comma separated. Campaign or ad set ID(s) must be using conversion
+                optimization.
+            </small>
+        </div>
+
+        <div class="form-group">
+            <label for="country-code-input">Country Code</label>
+            <input type="text" class="form-control" id="country-code-input" placeholder="example: US" maxlength="2">
+            <small id="country-code-input-help" class="form-text text-muted">
+                Enter the two letter country code. A full list can be found <a
+                    href="https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes" target="_blank">here</a>.
+            </small>
+        </div>
+
+        <div class="form-group">
+            <p>
+                <label for="slider-input" aria-describedby="slider-input-help">Audience Size:&nbsp;</label>
+                <input type="text" id="slider-input" readonly style="border:0; color:#f6931f; font-weight:bold;">
+            </p>
+            <div id="slider-range"></div>
+            <small id="slider-input-help" class="form-text text-muted" style="padding-top: 0.5rem;">
+                Audience size ranges from 1% to 10% of the combined population of your selected locations. A 1%
+                lookalike consists of the people most similar to your lookalike source. Increasing the percentage
+                creates a bigger, broader audience.
+            </small>
+        </div>
+
+        <div class="form-group">
+            <label for="access-token-input">Access Token</label>
+            <input type="text" class="form-control" id="access-token-input" aria-describedby="access-token-input-help"
+                   placeholder="">
+            <small id="access-token-input-help" class="form-text text-muted">
+                See instructions for obtaining an access token.
+            </small>
+        </div>
+
+        <button type="button" id="submit-button" class="btn btn-primary">Submit</button>
+        <br/>
+        <br/>
+
+        <div id="alert-text-box" class="alert alert-success alert-dismissible fade show" role="alert"
+             style="display: none;">
+            <span id="alert-text"></span>
+            <button type="button" class="close" onclick="$('#alert-text-box').hide();">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </form>
+</div>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+<script>
+    $('#submit-button').click(function () {
+        $('#alert-text-box').hide();
+
+        let adAccountId = $('#ad-account-id-input').val().trim();
+        let adSetIds = $('#ad-set-id-input').val().trim();
+        let countryCode = $('#country-code-input').val().trim();
+        let accessToken = $('#access-token-input').val().trim();
+        let minRatio = $('#slider-range').slider("values", 0);
+        let maxRatio = $('#slider-range').slider("values", 1);
+
+        if (adAccountId === '' || adSetIds === '' || countryCode === '' || accessToken === '') {
+            sendAlert('Please complete all fields', true);
+            return;
+        }
+        if (!/^\d+$/.test(adAccountId)) {
+            sendAlert('Ad Account ID must be numeric', true);
+            return;
+        }
+        adSetIds = adSetIds.split(/,/);
+        adSetIds = adSetIds.map(id => id.trim());
+        for (let x in adSetIds) {
+            let adSetId = adSetIds[x];
+            if (!/^\d+$/.test(adSetId)) {
+                sendAlert('All Ad Set/ Campaign IDs must be numeric', true);
+                return;
+            }
+        }
+        let data = {
+            'subtype': 'LOOKALIKE',
+            'access_token': accessToken,
+            'lookalike_spec': {
+                'origin_ids': adSetIds.join(','),
+                'starting_ratio': minRatio / 100,
+                'ratio': maxRatio / 100,
+                'conversion_type': 'campaign_conversions',
+                'country': countryCode
+            }
+        };
+        $.ajax({
+            url: "https://graph.facebook.com/v9.0/act_" + adAccountId + '/customaudiences',
+            type: "POST",
+            data: data,
+            success: function (res) {
+                console.log(res);
+                fbq('track', 'LALCreated');
+                sendAlert('Success! Audience ID: ' + res.id, false);
+            },
+            error: function (res) {
+                let errorText = res.responseJSON.error.message + ' fb_traceid: ' + res.responseJSON.error.fbtrace_id;
+                fbq('track', 'LALFailure');
+                sendAlert(errorText, true);
+            }
+        });
+    });
+
+    function sendAlert(text, isError) {
+        let $alert = $('#alert-text-box');
+        if (isError) {
+            $alert.removeClass('alert-success');
+            $alert.addClass('alert-danger');
+        } else {
+            $alert.removeClass('alert-danger');
+            $alert.addClass('alert-success');
+        }
+        $('#alert-text').text(text);
+        $alert.show();
+    }
+
+</script>
+</body>
+</html>
