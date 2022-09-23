@@ -62,12 +62,12 @@
         </div>
 
         <div class="form-group">
-            <label for="ad-set-id-input">Campaign/ Ad Set ID(s)</label>
+            <label for="ad-set-id-input">Ad Set ID(s)</label>
             <input type="text" class="form-control" id="ad-set-id-input" aria-describedby="ad-set-id-input-help"
                    placeholder="">
             <small id="ad-set-id-input-help" class="form-text text-muted">
                 People who convert on these ads are used to model a lookalike. One or more <strong>campaign IDs or ad
-                set IDs</strong>, or a mix of them, comma separated. Campaign or ad set ID(s) must be using conversion
+                set IDs</strong>, or a mix of them, comma separated. Ad set ID(s) must be using conversion
                 optimization.
             </small>
         </div>
@@ -144,7 +144,7 @@
         for (let x in adSetIds) {
             let adSetId = adSetIds[x];
             if (!/^\d+$/.test(adSetId)) {
-                sendAlert('All Ad Set/ Campaign IDs must be numeric', true);
+                sendAlert('All Ad Set IDs must be numeric', true);
                 return;
             }
         }
